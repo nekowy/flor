@@ -1827,15 +1827,21 @@ function gameLoop(timestamp) {
 
 // --- UI & Interaction ---
 function resizeCanvas() {
-  const newWidth = window.innerWidth;
-  const newHeight = window.innerHeight;
+  const newWidth = window.innerWidth * 0.95;
+  const newHeight = window.innerHeight * 0.95;
 
   if (flowerCanvas.width !== newWidth || flowerCanvas.height !== newHeight) {
     flowerCanvas.width = newWidth;
     flowerCanvas.height = newHeight;
-    // Plants y-coordinates are relative to SOIL_HEIGHT, which itself is relative to canvas.height,
-    // so they adjust automatically. Initial x-coordinates might need scaling if they were
-    // relative to canvas.width, but planting new ones uses absolute click coordinates.
+    flowerCanvas.style.width = newWidth + "px";
+    flowerCanvas.style.height = newHeight + "px";
+    flowerCanvas.style.minHeight = newHeight + "px";
+    flowerCanvas.style.minWidth = newWidth + "px";
+    flowerCanvas.style.position = "fixed";
+    flowerCanvas.style.top = "10px";
+    flowerCanvas.style.left = "10px";
+    flowerCanvas.style.border = "1px solid #777";
+    flowerCanvas.style.borderRadius = "5px";
   }
 }
 function updateInfoPanel() {
@@ -2281,8 +2287,8 @@ if (!localStorage.getItem(SAVE_KEY)) {
   continueGardenButton.title = "";
 }
 
-window.addEventListener("resize", resizeCanvas);
-window.addEventListener("orientationchange", resizeCanvas); // For mobile orientation changes
+//window.addEventListener("resize", resizeCanvas);
+//window.addEventListener("orientationchange", resizeCanvas); // For mobile orientation changes
 window.addEventListener("beforeunload", saveGame);
 
 // Basic tinycolor fallback if the library is not included
