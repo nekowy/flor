@@ -1,250 +1,206 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
   <head>
     <meta charset="utf-8" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
     />
+    <title>Meu Jardim Virtual Detalhado</title>
 
-    <title>Flor Aleatória</title>
-
-    <meta property="og:title" content="Flor Aleatória" />
-    <meta property="og:url" content="https://nekowy.github.io/flor/" />
-    <meta property="og:site_name" content="FlowerGrowing" />
-    <meta property="og:image" content="https://nekowy.github.io/flor/flor.webp" />
-    <meta property="og:description" content="Flor Aleatória" />
-    <meta property="og:type" content="website" />
-
-    <meta name="twitter:card" content="photo" />
-    <meta name="twitter:title" content="Flor Aleatória" />
-    <meta name="twitter:site" content="@nekowy" />
-    <meta name="twitter:description" content="Flor Aleatória" />
-    <meta name="twitter:image:src" content="https://nekowy.github.io/flor/flor.webp" />
+    <!-- OG/Twitter meta tags -->
+    <meta property="og:title" content="Meu Jardim Virtual Detalhado" />
+    <meta property="og:description" content="Cuide do seu jardim virtual com informações detalhadas!" />
+    <!-- ... (rest of your meta tags) ... -->
 
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap"
       rel="stylesheet"
     />
 
     <style type="text/css">
-      p {
+      body {
         margin: 0;
-      }
-
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-      }
-
-      .overlay,
-      .scare {
-        position: fixed;
-
-        top: 0;
-        left: 0;
-
-        height: 100vh;
-        width: 100vw;
-      }
-
-      p.overlay-title {
-        font-size: 24px;
-        font-weight: 900;
-        color: black;
-        line-height: 1;
-
-        margin-bottom: 16px;
-      }
-
-      .overlay-button {
-        display: inline-flex;
-        align-items: center;
-
-        height: 40px;
-
-        padding-right: 24px;
-        padding-left: 24px;
-
-        font-size: 16px;
-        font-weight: 500;
-        line-height: 1;
-
-        border-radius: 4px;
-
-        margin: 4px;
-
-        cursor: pointer;
-      }
-
-      .overlay-buttons-wrapper {
-        margin: 24px -8px -8px;
-      }
-
-      #accept-button {
-        background-color: rgb(132, 94, 194);
-
-        color: white;
-      }
-
-      #decline-button {
-        color: rgb(132, 94, 194);
-
-        border: 2px solid rgb(132, 94, 194);
-      }
-
-      p.overlay-description {
-        font-size: 16px;
-        font-weight: 400;
-        color: rgba(0, 0, 0, 0.5);
-        line-height: 1.25;
-
-        margin-bottom: 16px;
-      }
-
-      a.overlay-link {
-        display: inline-block;
-
-        text-decoration: none;
-
-        font-size: 16px;
-        font-weight: 500;
-        color: rgb(132, 94, 194);
-        line-height: 1;
-
-        position: relative;
-
-        margin-top: 16px;
-      }
-
-      a.overlay-link::before {
-        position: absolute;
-
-        content: "";
-
-        height: calc(50% + 4px);
-        width: calc(100% + 8px);
-
-        bottom: -4px;
-        left: -4px;
-
-        background-color: rgba(132, 94, 194, 0.1);
-      }
-
-      .overlay-body {
-        max-width: 512px;
-
-        text-align: center;
-
+        overflow: hidden;
+        background-color: #f5f6fa; /* Fallback */
         font-family: "Inter", sans-serif;
       }
-
-      .overlay[hidden] {
-        display: none;
-      }
+      p { margin: 0; }
+      *, *::before, *::after { box-sizing: border-box; }
 
       .overlay {
-        z-index: 2;
+        position: fixed; top: 0; left: 0;
+        height: 100vh; width: 100vw;
+        z-index: 1000;
+        display: flex; align-items: center; justify-content: center;
+        background-color: #f5f6fa;
+        padding: 24px;
+        transition: opacity 0.5s ease-in-out;
+      }
+      .overlay[hidden] { opacity: 0; pointer-events: none; }
+      .overlay-body { max-width: 512px; text-align: center; }
+      p.overlay-title { font-size: 28px; font-weight: 900; color: black; line-height: 1.1; margin-bottom: 20px; }
+      .overlay-button {
+        display: inline-flex; align-items: center; height: 44px;
+        padding: 0 28px; font-size: 16px; font-weight: 500; line-height: 1;
+        border-radius: 6px; margin: 8px; cursor: pointer;
+        transition: background-color 0.2s, transform 0.1s;
+        border: none;
+      }
+      .overlay-buttons-wrapper { margin: 24px -8px -8px; }
+      #new-garden-button { background-color: rgb(132, 94, 194); color: white; }
+      #new-garden-button:hover { background-color: rgb(112, 74, 174); }
+      #continue-garden-button { color: rgb(132, 94, 194); border: 2px solid rgb(132, 94, 194); background-color: white;}
+      #continue-garden-button:hover { background-color: rgba(132, 94, 194, 0.1); }
+      #continue-garden-button[disabled] {
+          color: #aaa; border-color: #ccc; cursor: not-allowed; background-color: #f0f0f0;
+      }
+      p.overlay-description {
+        font-size: 16px; font-weight: 400; color: rgba(0, 0, 0, 0.6);
+        line-height: 1.4; margin-bottom: 24px;
+      }
 
+      #flowerCanvas {
+        display: block;
+        position: fixed; top: 0; left: 0;
+        width: 100vw; height: 100vh;
+        z-index: 1;
+        cursor: default; /* Default cursor for canvas */
+      }
+      #flowerCanvas.tool-active-watering {
+        cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="%234FC3F7" stroke="black" stroke-width="1"><path d="M22 8.182V17a1 1 0 0 1-1 1h-2.27a1 1 0 0 1-.96-.72L17 12h2a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1h-2.06A5.002 5.002 0 0 0 13 3c-2.76 0-5 2.24-5 5v1H4.182A2.182 2.182 0 0 0 2 11.182V13a1 1 0 0 0 1 1h2v2a2 2 0 0 0 2 2h4v1a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-5.818A2.182 2.182 0 0 0 22 8.182zM13 5c1.654 0 3 1.346 3 3H10c0-1.654 1.346-3 3-3zm-2 6h2v4H7a1 1 0 0 1-1-1v-.818A1.182 1.182 0 0 1 7.182 11H11z"/></svg>') 12 12, crosshair;
+      }
+      #flowerCanvas.tool-active-planting {
+         cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="black" fill="%236ab04c"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 10a6 6 0 0 0 -6 -6h-3v2a6 6 0 0 0 6 6h3" /><path d="M12 14a6 6 0 0 1 6 -6h3v1a6 6 0 0 1 -6 6h-3" /><path d="M12 20l0 -10" /></svg>') 12 12, cell;
+      }
+
+
+      #ui-container {
+          position: fixed;
+          top: 0; left: 0;
+          width: 100vw; height: 100vh;
+          pointer-events: none;
+          z-index: 100;
+      }
+      #ui-container > * { pointer-events: auto; }
+
+      #infoPanel {
+        position: absolute; bottom: 20px; left: 20px;
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 12px 15px; border-radius: 8px; font-size: 14px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1); max-width: 250px;
+        border: 1px solid rgba(0,0,0,0.05);
+      }
+      #infoPanel p { margin-bottom: 6px; line-height: 1.4;}
+      #infoPanel p:last-child { margin-bottom: 0;}
+      #infoPanel strong { font-weight: 700;}
+
+      #seedSelector {
+        position: absolute; top: 20px; left: 20px;
+        background-color: rgba(255, 255, 255, 0.92);
+        padding: 15px; border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        border: 1px solid rgba(0,0,0,0.05);
+      }
+      #seedSelector h4 { margin-top: 0; margin-bottom: 10px; font-size: 16px; font-weight: 700;}
+      .seed-button {
+        background-color: #6ab04c; color: white;
+        padding: 8px 15px; margin: 5px 0; border: none;
+        border-radius: 5px; cursor: pointer; font-size: 14px;
+        display: block; width: 100%; text-align: left; transition: background-color 0.2s;
+      }
+      .seed-button:hover { background-color: #5a9a3c; }
+      .seed-button.selected { background-color: #4a802c; outline: 2px solid #3a701c; box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);}
+      .seed-button:disabled { background-color: #ccc; cursor: not-allowed; }
+
+      #toolbar {
+        position: absolute; bottom: 20px; right: 20px; display: flex; gap: 10px;
+      }
+      .tool-button {
+        width: 50px; height: 50px; border: 2px solid #ccc;
+        border-radius: 50%; cursor: pointer; background-size: 60%;
+        background-position: center; background-repeat: no-repeat;
+        background-color: white; box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+        transition: transform 0.1s, box-shadow 0.2s, border-color 0.2s;
+      }
+      .tool-button:hover { transform: translateY(-2px); box-shadow: 0 3px 8px rgba(0,0,0,0.15); }
+      .tool-button.active {
+        border-color: #76c7c0; box-shadow: 0 0 0 3px rgba(118, 199, 192, 0.5), inset 0 1px 3px rgba(0,0,0,0.1);
+      }
+      #wateringCanTool {
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%234FC3F7" width="30" height="30"><path d="M22 8.182V17a1 1 0 0 1-1 1h-2.27a1 1 0 0 1-.96-.72L17 12h2a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1h-2.06A5.002 5.002 0 0 0 13 3c-2.76 0-5 2.24-5 5v1H4.182A2.182 2.182 0 0 0 2 11.182V13a1 1 0 0 0 1 1h2v2a2 2 0 0 0 2 2h4v1a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-5.818A2.182 2.182 0 0 0 22 8.182zM13 5c1.654 0 3 1.346 3 3H10c0-1.654 1.346-3 3-3zm-2 6h2v4H7a1 1 0 0 1-1-1v-.818A1.182 1.182 0 0 1 7.182 11H11z"/></svg>');
+      }
+      #plantingTool {
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-seedling" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="%232c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 10a6 6 0 0 0 -6 -6h-3v2a6 6 0 0 0 6 6h3" /><path d="M12 14a6 6 0 0 1 6 -6h3v1a6 6 0 0 1 -6 6h-3" /><path d="M12 20l0 -10" /></svg>');
+      }
+
+      /* NEW UI ELEMENTS */
+      #timeIndicator {
+        position: absolute;
+        top: 20px;
+        right: 20px; /* Changed from left to right */
+        background-color: rgba(0, 0, 0, 0.6);
+        color: white;
+        padding: 8px 15px;
+        border-radius: 15px; /* More rounded */
+        font-size: 14px;
+        font-weight: 500;
+        box-shadow: 0 1px 5px rgba(0,0,0,0.2);
+        text-align: center;
+      }
+
+      #genericTooltip { /* This is an HTML tooltip, if we decide to use it */
+        position: absolute;
+        background-color: rgba(0,0,0,0.75);
+        color: white;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        pointer-events: none; /* Don't let it interfere with canvas clicks */
+        display: none; /* Hidden by default */
+        white-space: nowrap;
+        z-index: 1001; /* Above other UI */
+      }
+      .flex {
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
-
-        background-color: #f5f6fa;
-
-        padding-right: 24px;
-        padding-left: 24px;
-      }
-
-      .scare {
-        z-index: 1;
-      }
-
-      video#video {
-        height: 100%;
-        width: 100%;
-
-        object-fit: cover;
-      }
-
-      video#video::-webkit-media-controls-enclosure {
-        display: none !important;
+        text-align: center;
       }
     </style>
   </head>
   <body>
-    <div id="overlay" class="overlay">
-      <div class="overlay-body">
-        <p class="overlay-title">Flor Aleatória</p>
-
+    <div id="overlay" class="overlay flex">
+        <p class="overlay-title">Bem-vindo ao Seu Jardim Virtual!</p>
         <p class="overlay-description">
-          Você gostaria de ver uma flor crescendo?
+          Cuide das suas plantas, regue-as e veja-as crescer. <br>
+          Elas podem morrer se você não visitá-las por alguns dias! (Máx. <span id="max-days-info">3</span> dias)
         </p>
-
         <div class="overlay-buttons-wrapper">
-          <div id="accept-button" class="overlay-button">Sim</div>
-          <div id="decline-button" class="overlay-button">Não</div>
+          <div id="new-garden-button" class="overlay-button">Novo Jardim</div>
+          <div id="continue-garden-button" class="overlay-button">Continuar Jardim</div>
         </div>
-      </div>
     </div>
 
-    <div class="scare">
-      <video
-        id="video"
-        class="video"
-        src="./flor.mp4"
-        loop
-        preload="auto"
-        muted
-        playsinline
-      ></video>
+    <canvas id="flowerCanvas"></canvas>
+
+    <div id="ui-container">
+        <div id="infoPanel" style="display: none;">Planta Selecionada: Nenhuma</div>
+        <div id="seedSelector" style="display: none; overflow-y: auto; max-height: 50%;">
+            <h4>Plantar Semente:</h4>
+        </div>
+        <div id="toolbar">
+            <div id="wateringCanTool" class="tool-button" title="Regador (W)"></div>
+            <div id="plantingTool" class="tool-button" title="Plantar Semente (P)"></div>
+        </div>
+
+        <!-- NEW UI Elements -->
+        <div id="timeIndicator">00:00 - Carregando...</div>
+        <div id="genericTooltip"></div> <!-- For potential HTML tooltip later -->
     </div>
 
-    <script type="text/javascript">
-      const video = document.getElementById("video");
-      const overlay = document.getElementById("overlay");
-      const declineButton = document.getElementById("decline-button");
-      const acceptButton = document.getElementById("accept-button");
-
-      let hasClicked;
-
-      window.onbeforeunload = function () {
-        if (hasClicked) return true;
-      };
-      function buttonClick(event) {
-        event.preventDefault();
-
-        if (!hasClicked) hasClicked = true;
-
-        overlay.hidden = true;
-
-        // Ativa o som e define o volume no máximo
-        video.muted = false;
-        video.volume = 1.0;
-        video.play();
-
-        // Ativa fullscreen
-        videoClick();
-      }
-      function videoClick(event) {
-        if (event) event.preventDefault();
-        // if not fullscreen
-        const { documentElement } = document;
-        if (documentElement.requestFullscreen)
-          documentElement.requestFullscreen();
-        else if (documentElement.mozRequestFullScreen)
-          documentElement.mozRequestFullScreen();
-        else if (documentElement.webkitRequestFullscreen)
-          documentElement.webkitRequestFullscreen();
-        else if (documentElement.msRequestFullscreen)
-          documentElement.msRequestFullscreen();
-      }
-
-      acceptButton.addEventListener("click", buttonClick);
-      declineButton.addEventListener("click", buttonClick);
-      video.addEventListener("click", videoClick);
-    </script>
+      <script type="text/javascript" src="script.js"></script>
   </body>
 </html>
